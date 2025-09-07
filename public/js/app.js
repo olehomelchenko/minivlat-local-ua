@@ -42,7 +42,7 @@ function initResultsPage() {
 }
 
 function loadQuestions(version) {
-    fetch('../data/questions.json')
+    fetch('data/questions.json')
         .then(response => response.json())
         .then(data => {
             const questions = data.quizzes[version];

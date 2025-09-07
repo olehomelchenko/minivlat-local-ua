@@ -44,12 +44,28 @@ This project is a simple web application designed to collect responses from user
    ```
    npm install
    ```
-4. Start the server and bind it to all network interfaces (0.0.0.0):
+4. Configure environment variables:
+   ```bash
+   cp .env.example .env
+   # Edit .env file to configure your webhook URL and other settings
    ```
-   node server.js --host 0.0.0.0
+5. Start the server:
    ```
-5. Open your web browser and go to `http://localhost:3000` to access the application.
+   npm start
+   ```
+6. Open your web browser and go to `http://localhost:3000` to access the application.
 
-## Contributing
+## Configuration
 
-Feel free to submit issues or pull requests for any improvements or bug fixes.
+The application can be configured using environment variables:
+
+- `PORT`: Port for the web server (default: 3000)
+- `WEBHOOK_URL`: External webhook URL for data collection (optional)
+  - If not set, data will only be stored locally in `data/responses.json`
+  - If set, data will be sent to both the local file and the webhook
+- Docker/Traefik variables for production deployment (see `.env.example`)
+
+## Data Collection
+
+- **Local Storage**: All responses are always saved to `data/responses.json`
+- **External Webhook**: If `WEBHOOK_URL` is configured, responses are also sent to the external endpoint

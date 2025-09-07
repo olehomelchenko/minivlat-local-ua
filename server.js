@@ -23,6 +23,7 @@ app.post('/api/responses', (req, res) => {
 
     // Redirect payload to webhook
     if (WEBHOOK_URL) {
+        console.log("sending to ", WEBHOOK_URL);
         axios.post(WEBHOOK_URL, JSON.stringify(response), {
             headers: {
                 'Content-Type': 'application/json'

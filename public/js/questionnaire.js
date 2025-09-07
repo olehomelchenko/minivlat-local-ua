@@ -1,5 +1,9 @@
 // This file handles the logic for the questionnaire, including collecting additional participant information after the quiz.
 
+// Configure webhook URL via environment variable on server side
+// Fallback to local API endpoint if no external webhook configured
+const WEBHOOK_URL = '/api/responses';
+
 document.addEventListener('DOMContentLoaded', function() {
     const questionnaireForm = document.getElementById('questionnaire-form');
 
@@ -39,35 +43,30 @@ document.addEventListener('DOMContentLoaded', function() {
         const quizId = 'quiz';
         if (allQuizzes[quizId]) {
             allQuizzes[quizId].participantData = participantData;
-            allQuizzes[quizId].iterationVersion = 'v1.0.0'; // Add semantic versioning
+            allQuizzes[quizId].iterationVersion = 'v2.0.0'; // Add semantic versioning
             localStorage.setItem('allQuizzes', JSON.stringify(allQuizzes));
         }
 
-        // Send data to the backend
-        fetch('/api/responses', {
+        // Combine quiz results and questionnaire data
+        const combinedData = {
+            allQuizzes: allQuizzes
+        };
+
+        // Send combined data to webhook
+        fetch(WEBHOOK_URL, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(allQuizzes)
         })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.success) {
-                console.log('Success:', data);
-                window.location.href = 'results.html';
-            } else {
-                throw new Error(data.message || 'Failed to submit the form');
-            }
+        .then(() => {
+            alert('Анкету надіслано успішно');
+            window.location.href = 'results.html';
         })
         .catch((error) => {
-            console.error('Error:', error);
-            showError('Failed to submit the form. Please try again.');
+            console.error('Error sending data:', error);
+            alert('Сталася помилка при надсиланні анкети');
             submitButton.disabled = false;
         });
     });
