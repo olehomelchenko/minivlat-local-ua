@@ -1,6 +1,8 @@
 // This file handles the logic for the questionnaire, including collecting additional participant information after the quiz.
 
-const WEBHOOK_URL = "https://n8n.olehomelchenko.com/webhook/kse-research";
+// Configure webhook URL via environment variable on server side
+// Fallback to local API endpoint if no external webhook configured
+const WEBHOOK_URL = '/api/responses';
 
 document.addEventListener('DOMContentLoaded', function() {
     const questionnaireForm = document.getElementById('questionnaire-form');

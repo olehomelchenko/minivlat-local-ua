@@ -6,7 +6,7 @@ const axios = require('axios');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const WEBHOOK_URL = "https://n8n.olehomelchenko.com/webhook/kse-research";
+const WEBHOOK_URL = process.env.WEBHOOK_URL;
 
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
